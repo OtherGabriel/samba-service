@@ -1,13 +1,13 @@
 ## Simple file server with Samba on Ubuntu
-> Tutorial in portuguese
+> tutorial in portuguese
 
 Bem, minha intenção com esse repositório é exemplificar e ajudar a todos na criação de um servidor de arquivos feito em Ubuntu e com a documentação em português.
 
 Para instalar o Samba, utilize os seguintes comandos:
 
 ```bash
-  sudo apt update
-  sudo apt install samba
+sudo apt update
+sudo apt install samba
 ```
 
 - sudo apt update é usado para atualizar os pacotes da sua máquina;
@@ -16,7 +16,7 @@ Para instalar o Samba, utilize os seguintes comandos:
 Com o pacote instalado, podemos verificar seus caminhos com o seguinte comando:
 
 ```bash
-  ls /etc/samba
+ls /etc/samba
 ```
 
 Vemos o seguinte arquivo **smb.conf**, que vai ser utilizado para a configuração básica de nosso projeto.
@@ -27,9 +27,9 @@ Vemos o seguinte arquivo **smb.conf**, que vai ser utilizado para a configuraç�
 Começamos pela configuração global no arquivo:
 
 ```bash
-  [global]
-  	workgroup = GROUPEXAMPLE
-  	netbios name = example
+[global]
+ workgroup = GROUPEXAMPLE
+ netbios name = example
 ```
 
 - workgroup é referente ao grupo de trabalho a ser usado;
@@ -39,13 +39,13 @@ Com as configurações globais feitas, podemos nos atentar às configurações d
 
 ```bash
 [sambashare]
-	comment = Samba share on Ubuntu
+ comment = Samba share on Ubuntu
 
-	path = /your-path/sambashare
-
-	read only = no
-	writable = yes
-	browsable = yes
+ path = /your-path/sambashare
+ 
+ read only = no
+ writable = yes
+ browsable = yes
 ```
 
 - o nome do nosso serviços está presente dentro dos colchetes: **[sambashare]**;
@@ -75,17 +75,17 @@ Agora, vamos nos atentar às opções mais básicas para a configuração de nos
 Sincronização com sysvol:
 
 ```path
-  [sysvol]
-    path = caminho-até-seu-sysvol
-    read only = No
+[sysvol]
+ path = caminho-até-seu-sysvol
+ read only = No
 ```
 
 Script personalizado de login:
 
 ```path
-  [netlogon]
-  	path = caminho-até-seu-script-netlogon
-  	read only = No
+[netlogon]
+ path = caminho-até-seu-script-netlogon
+ read only = No
 ```
 
 ## Adicionando um novo usuário no nosso servidor
@@ -93,34 +93,34 @@ Script personalizado de login:
 Primeiramente, vamos adicionar o usuário Unix da seguinte maneira:
 
 ```bash
-  sudo adduser your-user
+sudo adduser your-user
 ```
 
 Agora, vamos adicionar esse mesmo usuário no Samba da seguinte forma:
 
 ```bash
-  sudo smbpasswd -a your-user
+sudo smbpasswd -a your-user
 ```
 
-## Como checar seu servidor através da sua própria máquina
-> Smbclient
+## Como checar o servidor através de sua máquina
+> smbclient
 
 Iremos utilizar o smbclient para checar nosso primeiro diretório compartilhado. Primeiramente, vamos instalar o pacote:
 
 ```bash
-  sudo apt install smbclient
+sudo apt install smbclient
 ```
 
 O Smbclient é responsável pela criação de um client para acessarmos nosso serviço e, consequentemente, nosso diretório compartilhado. Para listarmos nossos diretórios compartilhados, iremos utilizar o seguinte comando:
 
 ```bash
-  smbclient -L your-user
+smbclient -L your-user
 ```
 
 Após esse comando, a saída será a lista com nossos diretórios compartilhados, seus tipos e o comentário que colocamos primeiramente nas suas configurações. Agora, para acessarmos esses diretórios, iremos utilizar o seguinte comando:
 
 ```bash
-  /usr/bin/smbclient \\\\your-user\\sambashare your-password
+/usr/bin/smbclient \\\\your-user\\sambashare your-password
 ```
 
 Dessa forma, iremos acessar a nossa pasta e já podemos, inclusive, conferir os arquivos e as outras pastas presentes nela.
